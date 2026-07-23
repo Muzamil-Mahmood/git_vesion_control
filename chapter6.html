@@ -1,0 +1,263 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ch 6: Team Strategies & CI/CD — GitBranch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="8" fill="url(#navGrad)"/>
+        <path d="M8 14h12M14 8v12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        <defs><linearGradient id="navGrad" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#635BFF"/><stop offset="1" stop-color="#A259FF"/></linearGradient></defs>
+      </svg>
+      GitBranch
+    </a>
+    <ul class="nav-links">
+      <li><a href="chapter1.html">Ch 1</a></li>
+      <li><a href="chapter2.html">Ch 2</a></li>
+      <li><a href="chapter3.html">Ch 3</a></li>
+      <li><a href="chapter4.html">Ch 4</a></li>
+      <li><a href="chapter5.html">Ch 5</a></li>
+      <li><a href="chapter6.html" style="color:var(--ink)">Ch 6</a></li>
+      <li><a href="quiz.html" class="nav-cta">Take Quiz</a></li>
+    </ul>
+  </nav>
+
+  <!-- CHAPTER HERO -->
+  <div class="chapter-hero">
+    <div class="section-eyebrow">Chapter 06 — Advanced</div>
+    <h1>Team Strategies &amp; CI/CD</h1>
+    <p>Choose the right branching strategy for your team and set up automated testing and deployment.</p>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content-section">
+
+    <h3>GitFlow Workflow</h3>
+    <p>GitFlow is a structured branching model designed for projects with scheduled releases — perfect for mobile apps that ship to app stores on a fixed cadence.</p>
+
+    <p><strong>Branch structure:</strong></p>
+    <ul>
+      <li><code>main</code> — Production-ready code. Only release and hotfix branches merge here.</li>
+      <li><code>develop</code> — Integration branch. All features merge here first.</li>
+      <li><code>feature/*</code> — Feature branches. Branch from develop, merge back when done.</li>
+      <li><code>release/*</code> — Release preparation. Bug fixes only, then merge to main AND develop.</li>
+      <li><code>hotfix/*</code> — Emergency fixes. Branch from main, merge to both main and develop.</li>
+    </ul>
+
+    <div class="info-box">
+      <p><strong>Best for:</strong> Mobile teams with versioned releases (v1.0, v1.1, v2.0). When you need release candidates, beta testing, and hotfixes for live apps.</p>
+    </div>
+
+    <h3>GitHub Flow</h3>
+    <p>GitHub Flow is simpler — just <code>main</code> and feature branches. Every change goes through a PR, gets reviewed, and merges to main. Main is always deployable.</p>
+
+    <p><strong>The workflow:</strong></p>
+    <ul>
+      <li>Create a branch from main</li>
+      <li>Make changes and commit</li>
+      <li>Open a PR and get review</li>
+      <li>Merge to main after approval</li>
+      <li>Deploy from main</li>
+    </ul>
+
+    <div class="info-box">
+      <p><strong>Best for:</strong> Teams practicing continuous deployment. When you can ship to production multiple times per day. Works well for web apps and teams with mature CI/CD.</p>
+    </div>
+
+    <h3>Trunk-Based Development</h3>
+    <p>Trunk-based development means everyone commits to a single branch (main/trunk) with short-lived feature branches (less than a day). Feature flags control what's visible to users.</p>
+
+    <ul>
+      <li>Short-lived branches (hours, not weeks)</li>
+      <li>Feature flags to hide incomplete features</li>
+      <li>Continuous integration — merge to main at least daily</li>
+      <li>Automated testing catches regressions</li>
+    </ul>
+
+    <div class="info-box">
+      <p><strong>Best for:</strong> Mature teams with strong testing culture. Google, Facebook, and Microsoft use variations of this approach.</p>
+    </div>
+
+    <h3>Choosing a Strategy</h3>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Strategy</th>
+          <th>Complexity</th>
+          <th>Best For</th>
+          <th>Release Cadence</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>GitFlow</td>
+          <td>High</td>
+          <td>Scheduled releases</td>
+          <td>Weekly/Monthly</td>
+        </tr>
+        <tr>
+          <td>GitHub Flow</td>
+          <td>Low</td>
+          <td>Continuous deployment</td>
+          <td>Multiple per day</td>
+        </tr>
+        <tr>
+          <td>Trunk-Based</td>
+          <td>Medium</td>
+          <td>Mature teams</td>
+          <td>Continuous</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Monorepo Strategies</h3>
+    <p>A monorepo houses multiple projects in a single repository. Common in mobile development when you have an Android app, iOS app, and shared backend.</p>
+
+    <p><strong>Tools for monorepos:</strong></p>
+    <ul>
+      <li><strong>Nx</strong> — Smart monorepo tooling for JavaScript/TypeScript projects</li>
+      <li><strong>Turborepo</strong> — High-performance build system for monorepos</li>
+      <li><strong>Bazel</strong> — Google's build system for massive monorepos</li>
+      <li><strong>Gradle (multi-project)</strong> — Native Android monorepo support</li>
+    </ul>
+
+    <div class="warning-box">
+      <p><strong>Challenge:</strong> Monorepos require careful CI configuration. Only rebuild/test projects that actually changed. Without this, CI times explode as the repo grows.</p>
+    </div>
+
+    <h3>CI/CD for Mobile</h3>
+    <p>Continuous Integration and Continuous Deployment automate building, testing, and releasing your app. Here's a basic GitHub Actions workflow for Android:</p>
+
+    <div class="code-block">
+      <span class="code-comment"># .github/workflows/android.yml</span><br>
+      name: Android CI<br><br>
+      on:<br>
+      &nbsp;&nbsp;push:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;branches: [ main ]<br>
+      &nbsp;&nbsp;pull_request:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;branches: [ main ]<br><br>
+      jobs:<br>
+      &nbsp;&nbsp;build:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;runs-on: ubuntu-latest<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;steps:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;- uses: actions/checkout@v4<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;- uses: actions/setup-java@v4<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;java-version: '17'<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distribution: 'temurin'<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;- run: ./gradlew test<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;- run: ./gradlew assembleDebug
+    </div>
+
+    <p><strong>Key CI/CD concepts for mobile:</strong></p>
+    <ul>
+      <li><strong>Build verification</strong> — Ensure the project compiles on every push</li>
+      <li><strong>Automated testing</strong> — Run unit tests, UI tests, and lint checks</li>
+      <li><strong>Artifact generation</strong> — Build APK/IPA for testing</li>
+      <li><strong>Deployment automation</strong> — Fastlane for app store submission</li>
+      <li><strong>Code signing</strong> — Manage certificates and provisioning profiles securely</li>
+    </ul>
+
+    <h3>Resources to Keep Learning</h3>
+
+    <div class="resources-grid">
+      <a href="https://docs.github.com/en/get-started" class="resource-card reveal" target="_blank" rel="noopener">
+        <div class="tag">Official Guide</div>
+        <h3>GitHub Getting Started</h3>
+        <p>GitHub's official onboarding — create repos, make your first PR, and explore collaborative workflows.</p>
+        <div class="arrow">Learn more →</div>
+      </a>
+      <a href="https://git-scm.com/doc" class="resource-card reveal" target="_blank" rel="noopener">
+        <div class="tag">Documentation</div>
+        <h3>Git Official Docs</h3>
+        <p>The authoritative reference for every Git command. Deep but well-organized.</p>
+        <div class="arrow">Learn more →</div>
+      </a>
+      <a href="https://learngitbranching.js.org/" class="resource-card reveal" target="_blank" rel="noopener">
+        <div class="tag">Interactive</div>
+        <h3>Learn Git Branching</h3>
+        <p>The best visual, interactive way to understand branching and merging. A must for visual learners.</p>
+        <div class="arrow">Learn more →</div>
+      </a>
+      <a href="https://www.atlassian.com/git/tutorials" class="resource-card reveal" target="_blank" rel="noopener">
+        <div class="tag">Tutorial</div>
+        <h3>Atlassian Git Tutorials</h3>
+        <p>Covers everything from basics to advanced workflows like Gitflow and feature flags.</p>
+        <div class="arrow">Learn more →</div>
+      </a>
+      <a href="https://github.com/topics/android-gitignore" class="resource-card reveal" target="_blank" rel="noopener">
+        <div class="tag">Template</div>
+        <h3>.gitignore for Mobile</h3>
+        <p>Ready-to-use .gitignore templates for Android, iOS, Flutter, and React Native projects.</p>
+        <div class="arrow">Learn more →</div>
+      </a>
+      <a href="https://fastlane.tools/" class="resource-card reveal" target="_blank" rel="noopener">
+        <div class="tag">Tool</div>
+        <h3>Fastlane</h3>
+        <p>Automate iOS and Android deployment. Build, test, and release from CI with Git integration.</p>
+        <div class="arrow">Learn more →</div>
+      </a>
+    </div>
+
+    <div class="info-box">
+      <p><strong>Congratulations!</strong> You've completed the entire guide. You now have the knowledge to use Git effectively — from your first commit to advanced team strategies. Keep practicing, and check back whenever you need a refresher.</p>
+    </div>
+
+  </div>
+
+  <!-- CTA -->
+  <section class="cta" id="start">
+    <div class="cta-content reveal">
+      <h2>Ready to test your knowledge?</h2>
+      <p>Take the quiz to see how much you've learned. 15 questions covering all 6 chapters.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="quiz.html" class="btn-glow">
+          Take the Quiz
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="index.html" class="btn-glow" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);">
+          Back to Home
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER NAV -->
+  <div class="chapter-nav">
+    <a href="chapter5.html">
+      <span class="nav-direction">← Previous</span>
+      <span class="nav-title">Advanced Git</span>
+    </a>
+    <a href="index.html" class="nav-next">
+      <span class="nav-direction">Back to →</span>
+      <span class="nav-title">Home</span>
+    </a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-links">
+      <a href="chapter1.html">Ch 1: Intro</a>
+      <a href="chapter2.html">Ch 2: Concepts</a>
+      <a href="chapter3.html">Ch 3: Workflow</a>
+      <a href="chapter4.html">Ch 4: Commands</a>
+      <a href="chapter5.html">Ch 5: Advanced</a>
+      <a href="chapter6.html">Ch 6: Strategies</a>
+    </div>
+    <p>Built for students learning version control. Not affiliated with GitHub or Git.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

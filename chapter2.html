@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ch 2: Core Concepts — GitBranch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="8" fill="url(#navGrad)"/>
+        <path d="M8 14h12M14 8v12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        <defs><linearGradient id="navGrad" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#635BFF"/><stop offset="1" stop-color="#A259FF"/></linearGradient></defs>
+      </svg>
+      GitBranch
+    </a>
+    <ul class="nav-links">
+      <li><a href="chapter1.html">Ch 1</a></li>
+      <li><a href="chapter2.html" style="color:var(--ink)">Ch 2</a></li>
+      <li><a href="chapter3.html">Ch 3</a></li>
+      <li><a href="chapter4.html">Ch 4</a></li>
+      <li><a href="chapter5.html">Ch 5</a></li>
+      <li><a href="chapter6.html">Ch 6</a></li>
+      <li><a href="quiz.html" class="nav-cta">Take Quiz</a></li>
+    </ul>
+  </nav>
+
+  <!-- CHAPTER HERO -->
+  <div class="chapter-hero">
+    <div class="section-eyebrow">Chapter 02 — Beginner</div>
+    <h1>Core Concepts</h1>
+    <p>Every VCS works around a few core ideas. Once you understand these, Git makes sense.</p>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content-section">
+
+    <h3>The Three States of Git</h3>
+    <p>Before diving into commands, understand that Git tracks your files in three states:</p>
+    <ul>
+      <li><strong>Working Directory</strong> — Your actual files on disk. This is where you edit code.</li>
+      <li><strong>Staging Area</strong> — A preview of what will go into your next commit. You "stage" changes here.</li>
+      <li><strong>Repository</strong> — The committed history. Once you commit, the snapshot is permanent.</li>
+    </ul>
+
+    <p>The flow is: edit files → stage changes → commit. This two-step process (add then commit) lets you craft precise commits that group related changes together.</p>
+
+    <div class="code-block">
+      <span class="code-comment"># The basic workflow</span><br>
+      git add file.swift      <span class="code-comment"># stage changes</span><br>
+      git commit -m "msg"     <span class="code-comment"># commit staged changes</span>
+    </div>
+
+    <h3>Repository</h3>
+    <p>A repository (or "repo") is your project's entire history — every file, every change, every decision your team made. It lives in a <code>.git</code> folder at the root of your project.</p>
+    <p>When you run <code>git init</code>, Git creates this folder. When you <code>clone</code> a repo from GitHub, you get a complete copy of the entire history — not just the latest files.</p>
+
+    <div class="code-block">
+      <span class="code-comment"># Clone an existing repository</span><br>
+      git clone https://github.com/you/app.git<br><br>
+      <span class="code-comment"># This creates an app/ folder with the full history</span>
+    </div>
+
+    <h3>Commits</h3>
+    <p>A commit is a snapshot of your project at a point in time. It's like saving a photo of your code — you can always go back to it.</p>
+    <p>Every commit has:</p>
+    <ul>
+      <li>A unique 40-character hash (e.g., <code>a3f7b2c...</code>)</li>
+      <li>A message describing what changed</li>
+      <li>A pointer to the previous commit (its parent)</li>
+      <li>A snapshot of all tracked files</li>
+    </ul>
+
+    <div class="code-block">
+      git commit -m "feat: add profile screen"<br><br>
+      <span class="code-comment"># Good commit messages explain WHY, not just WHAT</span><br>
+      git commit -m "fix: resolve crash on low memory devices"<br>
+      git commit -m "refactor: extract auth logic into separate module"
+    </div>
+
+    <div class="info-box">
+      <p><strong>Tip:</strong> Write commit messages in imperative mood ("add feature" not "added feature"). This matches the style used by <code>git log</code> and makes history easier to read.</p>
+    </div>
+
+    <h3>Branches</h3>
+    <p>Branches let you work on features in isolation. Your main code stays stable while you experiment on a separate copy.</p>
+    <p>Think of branches as parallel universes — you can create one, make changes, and decide later whether to merge it back into the main timeline.</p>
+
+    <div class="code-block">
+      <span class="code-comment"># Create and switch to a new branch</span><br>
+      git checkout -b feature/dark-mode<br><br>
+      <span class="code-comment"># Now you're on feature/dark-mode</span><br>
+      <span class="code-comment"># Make changes, commit, then switch back</span><br>
+      git checkout main<br><br>
+      <span class="code-comment"># Merge the feature branch</span><br>
+      git merge feature/dark-mode
+    </div>
+
+    <h3>Merging</h3>
+    <p>Merging combines changes from different branches. It's how your team brings features together into the main app.</p>
+    <p>When you merge, Git tries to automatically combine the changes. If both branches modified the same lines, you'll get a <strong>merge conflict</strong> — Git will ask you to manually choose which version to keep.</p>
+
+    <div class="code-block">
+      <span class="code-comment"># Merge a feature branch into main</span><br>
+      git checkout main<br>
+      git merge feature/dark-mode<br><br>
+      <span class="code-comment"># If there's a conflict, Git marks the files</span><br>
+      <span class="code-comment"># Edit the files to resolve, then:</span><br>
+      git add .<br>
+      git commit -m "Merge feature/dark-mode"
+    </div>
+
+    <div class="warning-box">
+      <p><strong>Merge Conflicts:</strong> Don't panic. Open the conflicted files, look for <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> markers, choose the correct code, remove the markers, and commit. It's a normal part of collaborative development.</p>
+    </div>
+
+    <h3>Remotes</h3>
+    <p>A remote is a version of your repo hosted elsewhere — like GitHub. It's how your team shares code across devices.</p>
+    <p>The default remote is called <code>origin</code>. When you clone a repo, Git automatically sets up the original as your <code>origin</code> remote.</p>
+
+    <div class="code-block">
+      <span class="code-comment"># Add a remote</span><br>
+      git remote add origin https://github.com/you/app.git<br><br>
+      <span class="code-comment"># Push your main branch to GitHub</span><br>
+      git push -u origin main<br><br>
+      <span class="code-comment"># The -u sets up tracking, so future pushes are just:</span><br>
+      git push
+    </div>
+
+    <h3>Pull Requests</h3>
+    <p>A pull request (PR) proposes changes and lets your team review code before merging. It's quality control for your app.</p>
+    <p>On GitHub, you create a PR from your feature branch. Team members can review the code, leave comments, and approve or request changes. Once approved, you merge it into main.</p>
+
+    <div class="code-block">
+      <span class="code-comment"># Create a PR using GitHub CLI</span><br>
+      gh pr create --title "Add dark mode" --body "Implements theme switching"<br><br>
+      <span class="code-comment"># Merge after approval</span><br>
+      gh pr merge --squash
+    </div>
+
+    <h3>HEAD and References</h3>
+    <p>Git uses references (refs) to point to specific commits. The most important one is <code>HEAD</code> — it points to the commit you're currently looking at.</p>
+    <p>When you're on the <code>main</code> branch, HEAD points to the latest commit on main. When you switch branches, HEAD moves to the latest commit on that branch.</p>
+
+    <div class="code-block">
+      <span class="code-comment"># See what HEAD points to</span><br>
+      git log --oneline -1<br>
+      a3f7b2c (HEAD -> main) feat: add login screen<br><br>
+      <span class="code-comment"># HEAD~1 means one commit before HEAD</span><br>
+      git log --oneline HEAD~1
+    </div>
+
+    <h3>Tags</h3>
+    <p>Tags mark specific commits as important — typically releases. Unlike branches, tags don't move. They're permanent markers.</p>
+
+    <div class="code-block">
+      <span class="code-comment"># Create an annotated tag</span><br>
+      git tag -a v1.0.0 -m "First release"<br><br>
+      <span class="code-comment"># List all tags</span><br>
+      git tag<br><br>
+      <span class="code-comment"># Push tags to GitHub</span><br>
+      git push origin --tags
+    </div>
+
+    <div class="info-box">
+      <p><strong>Next Steps:</strong> Now that you understand the core concepts, head to <a href="chapter3.html">Chapter 3: Workflow &amp; Mobile Dev</a> to see how these concepts fit together in a real development workflow.</p>
+    </div>
+
+  </div>
+
+  <!-- CHAPTER NAV -->
+  <div class="chapter-nav">
+    <a href="chapter1.html">
+      <span class="nav-direction">← Previous</span>
+      <span class="nav-title">Introduction to Version Control</span>
+    </a>
+    <a href="chapter3.html" class="nav-next">
+      <span class="nav-direction">Next →</span>
+      <span class="nav-title">Workflow &amp; Mobile Dev</span>
+    </a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-links">
+      <a href="chapter1.html">Ch 1: Intro</a>
+      <a href="chapter2.html">Ch 2: Concepts</a>
+      <a href="chapter3.html">Ch 3: Workflow</a>
+      <a href="chapter4.html">Ch 4: Commands</a>
+      <a href="chapter5.html">Ch 5: Advanced</a>
+      <a href="chapter6.html">Ch 6: Strategies</a>
+    </div>
+    <p>Built for students learning version control. Not affiliated with GitHub or Git.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

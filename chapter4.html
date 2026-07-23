@@ -1,0 +1,433 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ch 4: Git Commands Reference — GitBranch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="8" fill="url(#navGrad)"/>
+        <path d="M8 14h12M14 8v12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        <defs><linearGradient id="navGrad" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#635BFF"/><stop offset="1" stop-color="#A259FF"/></linearGradient></defs>
+      </svg>
+      GitBranch
+    </a>
+    <ul class="nav-links">
+      <li><a href="chapter1.html">Ch 1</a></li>
+      <li><a href="chapter2.html">Ch 2</a></li>
+      <li><a href="chapter3.html">Ch 3</a></li>
+      <li><a href="chapter4.html" style="color:var(--ink)">Ch 4</a></li>
+      <li><a href="chapter5.html">Ch 5</a></li>
+      <li><a href="chapter6.html">Ch 6</a></li>
+      <li><a href="quiz.html" class="nav-cta">Take Quiz</a></li>
+    </ul>
+  </nav>
+
+  <!-- CHAPTER HERO -->
+  <div class="chapter-hero">
+    <div class="section-eyebrow">Chapter 04 — All Levels</div>
+    <h1>Git Commands Reference</h1>
+    <p>The commands you'll use every day, organized by what you're trying to do.</p>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content-section">
+
+    <h3>Getting Started</h3>
+    <p>Commands for setting up Git and creating repositories.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Command</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>git init</code></td>
+          <td>Create a new repository</td>
+          <td><code>git init my-project</code></td>
+        </tr>
+        <tr>
+          <td><code>git clone &lt;url&gt;</code></td>
+          <td>Copy an existing repository</td>
+          <td><code>git clone https://github.com/user/repo</code></td>
+        </tr>
+        <tr>
+          <td><code>git config --global user.name</code></td>
+          <td>Set your name</td>
+          <td><code>git config --global user.name "Jane"</code></td>
+        </tr>
+        <tr>
+          <td><code>git config --global user.email</code></td>
+          <td>Set your email</td>
+          <td><code>git config --global user.email "jane@example.com"</code></td>
+        </tr>
+        <tr>
+          <td><code>git config --list</code></td>
+          <td>Show all configuration</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><code>git help &lt;command&gt;</code></td>
+          <td>Show help for a command</td>
+          <td><code>git help commit</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Making Changes</h3>
+    <p>Commands for staging, committing, and inspecting changes.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Command</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>git status</code></td>
+          <td>See what changed</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><code>git add &lt;file&gt;</code></td>
+          <td>Stage a specific file</td>
+          <td><code>git add index.html</code></td>
+        </tr>
+        <tr>
+          <td><code>git add .</code></td>
+          <td>Stage all changes</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><code>git add -p</code></td>
+          <td>Interactive staging (choose hunks)</td>
+          <td>Stage parts of a file selectively</td>
+        </tr>
+        <tr>
+          <td><code>git commit -m "msg"</code></td>
+          <td>Commit staged changes</td>
+          <td><code>git commit -m "feat: add login"</code></td>
+        </tr>
+        <tr>
+          <td><code>git commit --amend</code></td>
+          <td>Modify the last commit</td>
+          <td>Add forgotten files to last commit</td>
+        </tr>
+        <tr>
+          <td><code>git diff</code></td>
+          <td>See unstaged changes</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><code>git diff --staged</code></td>
+          <td>See staged changes</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><code>git diff main..feature</code></td>
+          <td>Compare branches</td>
+          <td>See what's different</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Branching</h3>
+    <p>Commands for creating, switching, and managing branches.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Command</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>git branch</code></td>
+          <td>List local branches</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><code>git branch -a</code></td>
+          <td>List all branches (local + remote)</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><code>git branch &lt;name&gt;</code></td>
+          <td>Create a new branch</td>
+          <td><code>git branch feature/auth</code></td>
+        </tr>
+        <tr>
+          <td><code>git checkout -b &lt;name&gt;</code></td>
+          <td>Create and switch to a branch</td>
+          <td><code>git checkout -b feature/auth</code></td>
+        </tr>
+        <tr>
+          <td><code>git switch &lt;branch&gt;</code></td>
+          <td>Switch to a branch</td>
+          <td><code>git switch main</code></td>
+        </tr>
+        <tr>
+          <td><code>git merge &lt;branch&gt;</code></td>
+          <td>Merge a branch into current</td>
+          <td><code>git merge feature/auth</code></td>
+        </tr>
+        <tr>
+          <td><code>git branch -d &lt;name&gt;</code></td>
+          <td>Delete a merged branch</td>
+          <td><code>git branch -d feature/auth</code></td>
+        </tr>
+        <tr>
+          <td><code>git branch -D &lt;name&gt;</code></td>
+          <td>Force delete a branch</td>
+          <td><code>git branch -D feature/old</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Syncing</h3>
+    <p>Commands for working with remote repositories.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Command</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>git remote add origin &lt;url&gt;</code></td>
+          <td>Add a remote</td>
+          <td><code>git remote add origin github.com/user/repo</code></td>
+        </tr>
+        <tr>
+          <td><code>git push origin &lt;branch&gt;</code></td>
+          <td>Upload changes</td>
+          <td><code>git push origin main</code></td>
+        </tr>
+        <tr>
+          <td><code>git push -u origin &lt;branch&gt;</code></td>
+          <td>Push and set upstream</td>
+          <td>Future pushes need no arguments</td>
+        </tr>
+        <tr>
+          <td><code>git pull</code></td>
+          <td>Download and merge updates</td>
+          <td>Same as <code>git fetch && git merge</code></td>
+        </tr>
+        <tr>
+          <td><code>git pull --rebase</code></td>
+          <td>Pull with rebase instead of merge</td>
+          <td>Cleaner history</td>
+        </tr>
+        <tr>
+          <td><code>git fetch</code></td>
+          <td>Check for updates (no merge)</td>
+          <td>See what's new without changing your code</td>
+        </tr>
+        <tr>
+          <td><code>git push origin --tags</code></td>
+          <td>Push all tags</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Undoing Things</h3>
+    <p>Commands for reverting changes and recovering from mistakes.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Command</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>git restore &lt;file&gt;</code></td>
+          <td>Undo file changes (working dir)</td>
+          <td><code>git restore index.html</code></td>
+        </tr>
+        <tr>
+          <td><code>git restore --staged &lt;file&gt;</code></td>
+          <td>Unstage a file</td>
+          <td><code>git restore --staged index.html</code></td>
+        </tr>
+        <tr>
+          <td><code>git reset HEAD~1</code></td>
+          <td>Undo last commit (keep changes)</td>
+          <td>Changes go back to working dir</td>
+        </tr>
+        <tr>
+          <td><code>git reset --soft HEAD~1</code></td>
+          <td>Undo commit (keep staged)</td>
+          <td>Changes stay staged</td>
+        </tr>
+        <tr>
+          <td><code>git reset --hard HEAD~1</code></td>
+          <td>Undo commit (discard changes)</td>
+          <td>Warning: changes are lost</td>
+        </tr>
+        <tr>
+          <td><code>git stash</code></td>
+          <td>Temporarily shelve changes</td>
+          <td>Switch branches without committing</td>
+        </tr>
+        <tr>
+          <td><code>git stash pop</code></td>
+          <td>Restore stashed changes</td>
+          <td>Apply and remove from stash</td>
+        </tr>
+        <tr>
+          <td><code>git stash list</code></td>
+          <td>List all stashes</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Inspection</h3>
+    <p>Commands for viewing history and understanding changes.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Command</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>git log</code></td>
+          <td>View commit history</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><code>git log --oneline</code></td>
+          <td>Compact history view</td>
+          <td>One line per commit</td>
+        </tr>
+        <tr>
+          <td><code>git log --graph</code></td>
+          <td>Visual branch graph</td>
+          <td>See merge structure</td>
+        </tr>
+        <tr>
+          <td><code>git log --since="2 weeks ago"</code></td>
+          <td>Filter by date</td>
+          <td>Recent commits only</td>
+        </tr>
+        <tr>
+          <td><code>git blame &lt;file&gt;</code></td>
+          <td>Who changed what line</td>
+          <td>Find who wrote a specific line</td>
+        </tr>
+        <tr>
+          <td><code>git tag -a v1.0</code></td>
+          <td>Create a release tag</td>
+          <td><code>git tag -a v1.0 -m "First release"</code></td>
+        </tr>
+        <tr>
+          <td><code>git show &lt;commit&gt;</code></td>
+          <td>Show commit details</td>
+          <td><code>git show a3f7b2c</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Advanced Commands</h3>
+    <p>Commands for power users — covered in detail in <a href="chapter5.html">Chapter 5: Advanced Git</a>.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Command</th>
+          <th>Description</th>
+          <th>Chapter</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>git rebase -i</code></td>
+          <td>Interactive rebase</td>
+          <td><a href="chapter5.html">Ch 5</a></td>
+        </tr>
+        <tr>
+          <td><code>git cherry-pick &lt;hash&gt;</code></td>
+          <td>Apply a specific commit</td>
+          <td><a href="chapter5.html">Ch 5</a></td>
+        </tr>
+        <tr>
+          <td><code>git bisect</code></td>
+          <td>Binary search for bugs</td>
+          <td><a href="chapter5.html">Ch 5</a></td>
+        </tr>
+        <tr>
+          <td><code>git reflog</code></td>
+          <td>Recover lost commits</td>
+          <td><a href="chapter5.html">Ch 5</a></td>
+        </tr>
+        <tr>
+          <td><code>git clean -fd</code></td>
+          <td>Remove untracked files</td>
+          <td><a href="chapter5.html">Ch 5</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-box">
+      <p><strong>Next Steps:</strong> Ready for power-user techniques? Head to <a href="chapter5.html">Chapter 5: Advanced Git</a> to learn interactive rebase, cherry-picking, bisect, and more.</p>
+    </div>
+
+  </div>
+
+  <!-- CHAPTER NAV -->
+  <div class="chapter-nav">
+    <a href="chapter3.html">
+      <span class="nav-direction">← Previous</span>
+      <span class="nav-title">Workflow &amp; Mobile Dev</span>
+    </a>
+    <a href="chapter5.html" class="nav-next">
+      <span class="nav-direction">Next →</span>
+      <span class="nav-title">Advanced Git</span>
+    </a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-links">
+      <a href="chapter1.html">Ch 1: Intro</a>
+      <a href="chapter2.html">Ch 2: Concepts</a>
+      <a href="chapter3.html">Ch 3: Workflow</a>
+      <a href="chapter4.html">Ch 4: Commands</a>
+      <a href="chapter5.html">Ch 5: Advanced</a>
+      <a href="chapter6.html">Ch 6: Strategies</a>
+    </div>
+    <p>Built for students learning version control. Not affiliated with GitHub or Git.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ch 3: Workflow & Mobile Dev — GitBranch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="8" fill="url(#navGrad)"/>
+        <path d="M8 14h12M14 8v12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        <defs><linearGradient id="navGrad" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#635BFF"/><stop offset="1" stop-color="#A259FF"/></linearGradient></defs>
+      </svg>
+      GitBranch
+    </a>
+    <ul class="nav-links">
+      <li><a href="chapter1.html">Ch 1</a></li>
+      <li><a href="chapter2.html">Ch 2</a></li>
+      <li><a href="chapter3.html" style="color:var(--ink)">Ch 3</a></li>
+      <li><a href="chapter4.html">Ch 4</a></li>
+      <li><a href="chapter5.html">Ch 5</a></li>
+      <li><a href="chapter6.html">Ch 6</a></li>
+      <li><a href="quiz.html" class="nav-cta">Take Quiz</a></li>
+    </ul>
+  </nav>
+
+  <!-- CHAPTER HERO -->
+  <div class="chapter-hero">
+    <div class="section-eyebrow">Chapter 03 — Intermediate</div>
+    <h1>Workflow &amp; Mobile Dev</h1>
+    <p>The standard Git workflow for mobile teams, plus platform-specific guidance for Android, iOS, and cross-platform development.</p>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content-section">
+
+    <h3>The Standard Git Workflow</h3>
+    <p>Here's the workflow that most mobile teams follow. It keeps your main branch stable while enabling parallel development.</p>
+
+    <!-- Workflow Steps -->
+    <div class="workflow-steps">
+      <div class="step reveal">
+        <div class="step-marker">01</div>
+        <div class="step-content">
+          <h3>Create a Branch</h3>
+          <p>Start every new feature or bug fix on its own branch. This keeps the main branch stable and deployable at all times.</p>
+          <div class="step-code">git checkout -b feature/push-notifications</div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-marker">02</div>
+        <div class="step-content">
+          <h3>Build &amp; Commit Often</h3>
+          <p>Make small, focused commits. Each commit should represent one logical change — "add Firebase config" not "fix everything".</p>
+          <div class="step-code">git add . && git commit -m "feat: configure FCM"</div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-marker">03</div>
+        <div class="step-content">
+          <h3>Push &amp; Open a PR</h3>
+          <p>Push your branch to GitHub and open a pull request. Describe what you built and why — your future self will thank you.</p>
+          <div class="step-code">git push origin feature/push-notifications</div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-marker">04</div>
+        <div class="step-content">
+          <h3>Review &amp; Merge</h3>
+          <p>Your team reviews the code, runs CI tests (build the APK/IPA), and merges when approved. Automated checks catch issues early.</p>
+          <div class="step-code">gh pr merge --squash</div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-marker">05</div>
+        <div class="step-content">
+          <h3>Deploy &amp; Tag</h3>
+          <p>Tag your releases so you can always identify which commit shipped to the App Store or Play Store.</p>
+          <div class="step-code">git tag -a v1.2.0 -m "Release: push notifications"</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Branch Naming Conventions</h3>
+    <p>Consistent branch names make it easy to understand what each branch is for. Here are common patterns:</p>
+    <ul>
+      <li><code>feature/dark-mode</code> — New features</li>
+      <li><code>bugfix/crash-on-login</code> — Bug fixes</li>
+      <li><code>hotfix/critical-security-patch</code> — Urgent fixes for production</li>
+      <li><code>release/1.2.0</code> — Release preparation</li>
+      <li><code>chore/update-dependencies</code> — Maintenance tasks</li>
+    </ul>
+
+    <h3>Writing Good Commit Messages</h3>
+    <p>Good commit messages make your project history searchable and understandable. Follow the <strong>Conventional Commits</strong> format:</p>
+
+    <div class="code-block">
+      <span class="code-comment"># Format: type(scope): description</span><br><br>
+      feat(auth): add Google Sign-In<br>
+      fix(playback): resolve audio stuttering on Android 12<br>
+      refactor(profile): extract image loading to ViewModel<br>
+      docs(readme): update installation instructions<br>
+      test(auth): add unit tests for login flow
+    </div>
+
+    <p>Common types: <code>feat</code> (new feature), <code>fix</code> (bug fix), <code>refactor</code> (code restructuring), <code>docs</code> (documentation), <code>test</code> (tests), <code>chore</code> (maintenance).</p>
+
+    <h3>Android Projects</h3>
+    <p>Git works seamlessly with Android Studio, Gradle, and the Android ecosystem. Here's how to manage your Android-specific files:</p>
+
+    <ul>
+      <li>Track <code>build.gradle</code> changes across versions — dependency updates are critical history</li>
+      <li>Manage different flavors (dev, staging, prod) with separate config files</li>
+      <li>Handle <code>google-services.json</code> safely — never commit API keys</li>
+      <li>Separate SDK configs per environment</li>
+    </ul>
+
+    <div class="code-block">
+      <span class="code-comment"># Essential Android .gitignore entries</span><br>
+      *.iml<br>
+      .gradle/<br>
+      .idea/<br>
+      local.properties<br>
+      /build<br>
+      google-services.json
+    </div>
+
+    <h3>iOS Projects</h3>
+    <p>Xcode projects have complex file structures. Git tracks your Swift code, storyboards, and CocoaPods/SPM dependencies.</p>
+
+    <ul>
+      <li>Track <code>.xcodeproj</code> and <code>.xcworkspace</code> — but be careful with merge conflicts</li>
+      <li>Manage CocoaPods with <code>Podfile.lock</code> committed</li>
+      <li>Handle provisioning profiles via Fastlane</li>
+      <li>Use <code>.gitignore</code> for DerivedData and build artifacts</li>
+    </ul>
+
+    <div class="code-block">
+      <span class="code-comment"># Essential iOS .gitignore entries</span><br>
+      xcuserdata/<br>
+      *.xcworkspace/xcuserdata/<br>
+      DerivedData/<br>
+      build/<br>
+      Pods/
+    </div>
+
+    <h3>Cross-Platform Projects</h3>
+    <p>React Native, Flutter, and Kotlin Multiplatform projects need smart .gitignore files and CI pipelines for both platforms.</p>
+
+    <ul>
+      <li>Manage <code>node_modules</code> (React Native) and <code>pubspec.lock</code> (Flutter)</li>
+      <li>Set up CI builds for iOS and Android simultaneously</li>
+      <li>Separate shared code from platform-specific modules</li>
+      <li>Use Fastlane for automated deployments to both stores</li>
+    </ul>
+
+    <h3>Handling Merge Conflicts in Mobile Projects</h3>
+    <p>Merge conflicts are common in mobile projects, especially with Xcode project files and Gradle configs. Here's how to handle them:</p>
+
+    <div class="warning-box">
+      <p><strong>Xcode Projects:</strong> The <code>.pbxproj</code> file is notoriously difficult to merge manually. Consider using a tool like <code>xcodeproj</code> or coordinating with your team to avoid simultaneous edits to project settings.</p>
+    </div>
+
+    <div class="info-box">
+      <p><strong>Best Practice:</strong> When resolving conflicts in <code>build.gradle</code> or <code>Podfile</code>, always test the build after merging. Conflicts in dependency declarations can cause silent failures.</p>
+    </div>
+
+    <div class="info-box">
+      <p><strong>Next Steps:</strong> Head to <a href="chapter4.html">Chapter 4: Git Commands Reference</a> for a comprehensive cheat sheet of every Git command you'll need.</p>
+    </div>
+
+  </div>
+
+  <!-- CHAPTER NAV -->
+  <div class="chapter-nav">
+    <a href="chapter2.html">
+      <span class="nav-direction">← Previous</span>
+      <span class="nav-title">Core Concepts</span>
+    </a>
+    <a href="chapter4.html" class="nav-next">
+      <span class="nav-direction">Next →</span>
+      <span class="nav-title">Git Commands Reference</span>
+    </a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-links">
+      <a href="chapter1.html">Ch 1: Intro</a>
+      <a href="chapter2.html">Ch 2: Concepts</a>
+      <a href="chapter3.html">Ch 3: Workflow</a>
+      <a href="chapter4.html">Ch 4: Commands</a>
+      <a href="chapter5.html">Ch 5: Advanced</a>
+      <a href="chapter6.html">Ch 6: Strategies</a>
+    </div>
+    <p>Built for students learning version control. Not affiliated with GitHub or Git.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

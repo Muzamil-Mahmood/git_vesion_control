@@ -1,0 +1,277 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ch 5: Advanced Git — GitBranch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="8" fill="url(#navGrad)"/>
+        <path d="M8 14h12M14 8v12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        <defs><linearGradient id="navGrad" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#635BFF"/><stop offset="1" stop-color="#A259FF"/></linearGradient></defs>
+      </svg>
+      GitBranch
+    </a>
+    <ul class="nav-links">
+      <li><a href="chapter1.html">Ch 1</a></li>
+      <li><a href="chapter2.html">Ch 2</a></li>
+      <li><a href="chapter3.html">Ch 3</a></li>
+      <li><a href="chapter4.html">Ch 4</a></li>
+      <li><a href="chapter5.html" style="color:var(--ink)">Ch 5</a></li>
+      <li><a href="chapter6.html">Ch 6</a></li>
+      <li><a href="quiz.html" class="nav-cta">Take Quiz</a></li>
+    </ul>
+  </nav>
+
+  <!-- CHAPTER HERO -->
+  <div class="chapter-hero">
+    <div class="section-eyebrow">Chapter 05 — Advanced</div>
+    <h1>Advanced Git</h1>
+    <p>Power-user techniques for cleaning up history, debugging with precision, and recovering from disasters.</p>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content-section">
+
+    <h3>Interactive Rebase</h3>
+    <p>Interactive rebase lets you rewrite commit history — squash commits together, reorder them, edit messages, or split commits. It's the ultimate cleanup tool before opening a PR.</p>
+
+    <div class="code-block">
+      <span class="code-comment"># Rebase the last 5 commits interactively</span><br>
+      git rebase -i HEAD~5
+    </div>
+
+    <p>This opens an editor with a list of commits. Each line starts with a command:</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Command</th>
+          <th>What It Does</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>pick</code></td>
+          <td>Keep the commit as-is</td>
+        </tr>
+        <tr>
+          <td><code>squash</code></td>
+          <td>Meld into the previous commit</td>
+        </tr>
+        <tr>
+          <td><code>fixup</code></td>
+          <td>Like squash, but discard this commit's message</td>
+        </tr>
+        <tr>
+          <td><code>reword</code></td>
+          <td>Keep the commit, but edit the message</td>
+        </tr>
+        <tr>
+          <td><code>edit</code></td>
+          <td>Pause to amend the commit</td>
+        </tr>
+        <tr>
+          <td><code>drop</code></td>
+          <td>Remove the commit entirely</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-box">
+      <p><strong>Use Case:</strong> You made 8 small commits while debugging. Before opening a PR, squash them into 2-3 meaningful commits so reviewers can understand your changes at a glance.</p>
+    </div>
+
+    <div class="warning-box">
+      <p><strong>Caution:</strong> Never rebase commits that have been pushed to a shared branch. Rewriting public history causes conflicts for everyone else on your team.</p>
+    </div>
+
+    <h3>Cherry-Picking</h3>
+    <p>Cherry-pick applies a specific commit from one branch to another. It's useful for backporting fixes or selectively applying changes.</p>
+
+    <div class="code-block">
+      <span class="code-comment"># Apply a specific commit to your current branch</span><br>
+      git cherry-pick a3f7b2c<br><br>
+      <span class="code-comment"># Cherry-pick multiple commits</span><br>
+      git cherry-pick a3f7b2c b4c8d3e<br><br>
+      <span class="code-comment"># Cherry-pick without committing (stages changes only)</span><br>
+      git cherry-pick --no-commit a3f7b2c
+    </div>
+
+    <div class="info-box">
+      <p><strong>Use Case:</strong> You found a critical bug on the release branch. You already fixed it on the feature branch. Cherry-pick that fix directly to the release branch without merging the entire feature.</p>
+    </div>
+
+    <h3>Git Bisect</h3>
+    <p>Bisect uses binary search to find the exact commit that introduced a bug. Instead of checking commits one by one, it halves the search space each time.</p>
+
+    <div class="code-block">
+      <span class="code-comment"># Start bisecting</span><br>
+      git bisect start<br><br>
+      <span class="code-comment"># Mark current commit as bad</span><br>
+      git bisect bad<br><br>
+      <span class="code-comment"># Mark a known good commit</span><br>
+      git bisect good a1b2c3d<br><br>
+      <span class="code-comment"># Git checks out a middle commit</span><br>
+      <span class="code-comment"># Test it, then mark as good or bad</span><br>
+      git bisect good  <span class="code-comment"># or git bisect bad</span><br><br>
+      <span class="code-comment"># Repeat until Git finds the culprit</span><br>
+      <span class="code-comment"># When done:</span><br>
+      git bisect reset
+    </div>
+
+    <div class="info-box">
+      <p><strong>Pro Tip:</strong> Automate bisect with a test script: <code>git bisect run ./test.sh</code>. Git will run the script on each commit and automatically mark good/bad.</p>
+    </div>
+
+    <h3>Git Hooks</h3>
+    <p>Hooks are scripts that run automatically at specific points in the Git workflow. They live in the <code>.git/hooks/</code> directory.</p>
+
+    <p>Common hooks for mobile development:</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Hook</th>
+          <th>Runs When</th>
+          <th>Common Use</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>pre-commit</code></td>
+          <td>Before a commit is created</td>
+          <td>Run linters, formatters, unit tests</td>
+        </tr>
+        <tr>
+          <td><code>commit-msg</code></td>
+          <td>After commit message is entered</td>
+          <td>Validate commit message format</td>
+        </tr>
+        <tr>
+          <td><code>post-merge</code></td>
+          <td>After a merge completes</td>
+          <td>Auto-install dependencies</td>
+        </tr>
+        <tr>
+          <td><code>pre-push</code></td>
+          <td>Before push to remote</td>
+          <td>Run integration tests</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="code-block">
+      <span class="code-comment"># Example: pre-commit hook for linting</span><br>
+      <span class="code-comment"># .git/hooks/pre-commit</span><br>
+      #!/bin/sh<br>
+      ./gradlew lint<br>
+      if [ $? -ne 0 ]; then<br>
+      &nbsp;&nbsp;echo "Lint failed. Commit aborted."<br>
+      &nbsp;&nbsp;exit 1<br>
+      fi
+    </div>
+
+    <h3>Advanced .gitignore Patterns</h3>
+    <p>Mastering .gitignore patterns helps keep your repository clean and secure.</p>
+
+    <div class="code-block">
+      <span class="code-comment"># Ignore all .class files</span><br>
+      *.class<br><br>
+      <span class="code-comment"># Ignore all .log files</span><br>
+      *.log<br><br>
+      <span class="code-comment"># Ignore build directories</span><br>
+      build/<br>
+      /build<br><br>
+      <span class="code-comment"># But keep this specific build file</span><br>
+      !build/config.gradle<br><br>
+      <span class="code-comment"># Ignore files only in root directory</span><br>
+      /debug.log<br><br>
+      <span class="code-comment"># Ignore everything in temp/ except .gitkeep</span><br>
+      temp/*<br>
+      !temp/.gitkeep
+    </div>
+
+    <div class="warning-box">
+      <p><strong>Security:</strong> Never commit API keys, passwords, or certificates. Use <code>.gitignore</code> and environment-specific config files. If you accidentally commit a secret, rotate it immediately — it's in your history forever.</p>
+    </div>
+
+    <h3>Submodules</h3>
+    <p>Submodules let you include one Git repository inside another. Use this for shared libraries or components across projects.</p>
+
+    <div class="code-block">
+      <span class="code-comment"># Add a submodule</span><br>
+      git submodule add https://github.com/user/shared-lib.git libs/shared-lib<br><br>
+      <span class="code-comment"># Clone a repo with submodules</span><br>
+      git clone --recurse-submodules https://github.com/user/app.git<br><br>
+      <span class="code-comment"># Update submodules to latest</span><br>
+      git submodule update --remote --merge
+    </div>
+
+    <div class="info-box">
+      <p><strong>Alternative:</strong> For simpler dependency management, consider package managers (CocoaPods, Gradle dependencies) over submodules. Submodules add complexity and are easy to get wrong.</p>
+    </div>
+
+    <h3>Git Reflog</h3>
+    <p>Reflog is Git's safety net. It records every movement of HEAD, including commits that seem "lost" after a reset or rebase.</p>
+
+    <div class="code-block">
+      <span class="code-comment"># View reflog</span><br>
+      git reflog<br><br>
+      <span class="code-comment"># Output shows all HEAD movements</span><br>
+      a1b2c3d HEAD@{0}: reset: moving to HEAD~3<br>
+      f4e5d6c HEAD@{1}: commit: important feature<br>
+      g7h8i9j HEAD@{2}: commit: another change<br><br>
+      <span class="code-comment"># Recover a "lost" commit</span><br>
+      git checkout f4e5d6c<br><br>
+      <span class="code-comment"># Or create a branch at that commit</span><br>
+      git branch recover-branch f4e5d6c
+    </div>
+
+    <div class="info-box">
+      <p><strong>Key Insight:</strong> Even after <code>git reset --hard</code>, your commits aren't truly deleted. They're just unreachable. Reflog gives you 30 days to recover them.</p>
+    </div>
+
+    <div class="info-box">
+      <p><strong>Next Steps:</strong> Now that you've mastered advanced techniques, head to <a href="chapter6.html">Chapter 6: Team Strategies &amp; CI/CD</a> to learn about GitFlow, GitHub Flow, and CI/CD pipelines.</p>
+    </div>
+
+  </div>
+
+  <!-- CHAPTER NAV -->
+  <div class="chapter-nav">
+    <a href="chapter4.html">
+      <span class="nav-direction">← Previous</span>
+      <span class="nav-title">Git Commands Reference</span>
+    </a>
+    <a href="chapter6.html" class="nav-next">
+      <span class="nav-direction">Next →</span>
+      <span class="nav-title">Team Strategies &amp; CI/CD</span>
+    </a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-links">
+      <a href="chapter1.html">Ch 1: Intro</a>
+      <a href="chapter2.html">Ch 2: Concepts</a>
+      <a href="chapter3.html">Ch 3: Workflow</a>
+      <a href="chapter4.html">Ch 4: Commands</a>
+      <a href="chapter5.html">Ch 5: Advanced</a>
+      <a href="chapter6.html">Ch 6: Strategies</a>
+    </div>
+    <p>Built for students learning version control. Not affiliated with GitHub or Git.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

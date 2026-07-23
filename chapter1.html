@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ch 1: Introduction to Version Control — GitBranch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="8" fill="url(#navGrad)"/>
+        <path d="M8 14h12M14 8v12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        <defs><linearGradient id="navGrad" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#635BFF"/><stop offset="1" stop-color="#A259FF"/></linearGradient></defs>
+      </svg>
+      GitBranch
+    </a>
+    <ul class="nav-links">
+      <li><a href="chapter1.html" style="color:var(--ink)">Ch 1</a></li>
+      <li><a href="chapter2.html">Ch 2</a></li>
+      <li><a href="chapter3.html">Ch 3</a></li>
+      <li><a href="chapter4.html">Ch 4</a></li>
+      <li><a href="chapter5.html">Ch 5</a></li>
+      <li><a href="chapter6.html">Ch 6</a></li>
+      <li><a href="quiz.html" class="nav-cta">Take Quiz</a></li>
+    </ul>
+  </nav>
+
+  <!-- CHAPTER HERO -->
+  <div class="chapter-hero">
+    <div class="section-eyebrow">Chapter 01 — Beginner</div>
+    <h1>Introduction to Version Control</h1>
+    <p>What version control is, why every developer needs it, and how to set up Git for the first time.</p>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content-section">
+
+    <h3>What is Version Control?</h3>
+    <p>Version control is a system that records changes to files over time so you can recall specific versions later. Think of it as an unlimited "undo" button for your entire project.</p>
+    <p>In mobile development, where you're juggling Kotlin, Swift, XML layouts, Gradle configs, and Podfiles — version control keeps everything synchronized across your team.</p>
+    <p>Without it, you'd be copying folders named <code>app_v2_FINAL_FINAL</code> — and we've all been there.</p>
+
+    <div class="info-box">
+      <p><strong>Key Insight:</strong> Version control isn't just for teams. Even solo developers benefit from it — it tracks your progress, lets you experiment safely, and gives you a safety net when things go wrong.</p>
+    </div>
+
+    <h3>Why Version Control Matters</h3>
+    <p>Version control solves real problems that every developer faces:</p>
+    <ul>
+      <li><strong>Track every change</strong> — See who changed what, when, and why. No more guessing who broke the build.</li>
+      <li><strong>Experiment safely</strong> — Create branches to try new features without risking your stable code.</li>
+      <li><strong>Collaborate effectively</strong> — Multiple developers can work on the same project simultaneously without stepping on each other's toes.</li>
+      <li><strong>Roll back mistakes</strong> — Accidentally deleted something? Revert to any previous version in seconds.</li>
+      <li><strong>Ship with confidence</strong> — Know exactly what's in every release. Tag versions so you can reproduce any build.</li>
+    </ul>
+
+    <h3>Git vs Other Version Control Systems</h3>
+    <p>While there are many version control systems, Git has become the industry standard. Here's how it compares:</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Git</th>
+          <th>SVN</th>
+          <th>Mercurial</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Type</td>
+          <td>Distributed</td>
+          <td>Centralized</td>
+          <td>Distributed</td>
+        </tr>
+        <tr>
+          <td>Speed</td>
+          <td>Very fast (local operations)</td>
+          <td>Slower (needs network)</td>
+          <td>Fast</td>
+        </tr>
+        <tr>
+          <td>Branching</td>
+          <td>Lightweight and fast</td>
+          <td>Expensive (copies entire tree)</td>
+          <td>Lightweight</td>
+        </tr>
+        <tr>
+          <td>Offline work</td>
+          <td>Full functionality</td>
+          <td>Limited</td>
+          <td>Full functionality</td>
+        </tr>
+        <tr>
+          <td>Industry adoption</td>
+          <td>93% of developers</td>
+          <td>Declining</td>
+          <td>Niche</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-box">
+      <p><strong>Why Git won:</strong> Git's distributed model means every developer has a full copy of the repository. You can commit, branch, and merge entirely offline. When you're ready, push your changes to a remote like GitHub.</p>
+    </div>
+
+    <h3>Setting Up Git</h3>
+    <p>Before you start, you need Git installed on your machine. Here's how to set it up for each platform:</p>
+
+    <p><strong>macOS:</strong></p>
+    <div class="code-block">
+      <span class="code-comment"># Install via Homebrew</span><br>
+      brew install git
+    </div>
+
+    <p><strong>Windows:</strong></p>
+    <div class="code-block">
+      <span class="code-comment"># Download from git-scm.com or use winget</span><br>
+      winget install Git.Git
+    </div>
+
+    <p><strong>Linux (Ubuntu/Debian):</strong></p>
+    <div class="code-block">
+      sudo apt update<br>
+      sudo apt install git
+    </div>
+
+    <p>After installation, configure your identity. This information is attached to every commit you make:</p>
+
+    <div class="code-block">
+      git config --global user.name "Your Name"<br>
+      git config --global user.email "you@example.com"<br><br>
+      <span class="code-comment"># Verify it worked</span><br>
+      git config --list
+    </div>
+
+    <div class="warning-box">
+      <p><strong>Important:</strong> Use the same email address that's associated with your GitHub account. This links your commits to your profile.</p>
+    </div>
+
+    <h3>Your First Repository</h3>
+    <p>Let's create a new repository and make your first commit. Open your terminal and follow along:</p>
+
+    <div class="code-block">
+      <span class="code-comment"># Create a new project directory</span><br>
+      mkdir my-mobile-app<br>
+      cd my-mobile-app<br><br>
+      <span class="code-comment"># Initialize a Git repository</span><br>
+      git init<br><br>
+      <span class="code-comment"># Create your first file</span><br>
+      echo "# My Mobile App" > README.md<br><br>
+      <span class="code-comment"># Stage the file for commit</span><br>
+      git add README.md<br><br>
+      <span class="code-comment"># Make your first commit</span><br>
+      git commit -m "Initial commit: add README"
+    </div>
+
+    <p>Congratulations — you've just created your first Git repository and made your first commit! Every change you make from now on can be tracked and reverted.</p>
+
+    <h3>What Just Happened?</h3>
+    <p>Let's break down those commands:</p>
+    <ul>
+      <li><code>git init</code> — Creates a hidden <code>.git</code> folder that stores all your version history.</li>
+      <li><code>git add</code> — Stages changes, telling Git "I want to include this in the next commit."</li>
+      <li><code>git commit -m "message"</code> — Creates a snapshot of your staged changes with a descriptive message.</li>
+    </ul>
+
+    <p>Git tracks changes in three states: your working directory (files you're editing), the staging area (changes ready to commit), and the repository (committed history). Understanding this flow is fundamental to using Git effectively.</p>
+
+    <div class="info-box">
+      <p><strong>Next Steps:</strong> Now that you have Git set up and your first commit made, head to <a href="chapter2.html">Chapter 2: Core Concepts</a> to learn about repositories, commits, branches, and more.</p>
+    </div>
+
+  </div>
+
+  <!-- CHAPTER NAV -->
+  <div class="chapter-nav">
+    <a href="index.html">
+      <span class="nav-direction">← Previous</span>
+      <span class="nav-title">Home</span>
+    </a>
+    <a href="chapter2.html" class="nav-next">
+      <span class="nav-direction">Next →</span>
+      <span class="nav-title">Core Concepts</span>
+    </a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-links">
+      <a href="chapter1.html">Ch 1: Intro</a>
+      <a href="chapter2.html">Ch 2: Concepts</a>
+      <a href="chapter3.html">Ch 3: Workflow</a>
+      <a href="chapter4.html">Ch 4: Commands</a>
+      <a href="chapter5.html">Ch 5: Advanced</a>
+      <a href="chapter6.html">Ch 6: Strategies</a>
+    </div>
+    <p>Built for students learning version control. Not affiliated with GitHub or Git.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

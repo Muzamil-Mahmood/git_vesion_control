@@ -1,0 +1,172 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitBranch — Version Control from Scratch to Advanced</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="8" fill="url(#navGrad)"/>
+        <path d="M8 14h12M14 8v12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        <defs><linearGradient id="navGrad" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#635BFF"/><stop offset="1" stop-color="#A259FF"/></linearGradient></defs>
+      </svg>
+      GitBranch
+    </a>
+    <ul class="nav-links">
+      <li><a href="chapter1.html">Basics</a></li>
+      <li><a href="chapter3.html">Workflow</a></li>
+      <li><a href="chapter4.html">Commands</a></li>
+      <li><a href="chapter5.html">Advanced</a></li>
+      <li><a href="chapter6.html">Strategies</a></li>
+      <li><a href="chapter1.html" class="nav-cta">Start Learning</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Free &amp; open-source learning resource
+      </div>
+      <h1>Master Version Control<br>from <span class="gradient-text">Scratch to Advanced</span></h1>
+      <p class="hero-sub">A complete guide to Git, GitHub, and collaborative workflows. From your first commit to advanced team strategies — everything you need in one place.</p>
+      <div class="hero-actions">
+        <a href="chapter1.html" class="btn-primary">
+          Start Learning
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="chapter4.html" class="btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 3h12M2 8h8M2 13h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Quick Reference
+        </a>
+      </div>
+
+      <!-- Terminal -->
+      <div class="terminal">
+        <div class="terminal-bar">
+          <div class="terminal-dot red"></div>
+          <div class="terminal-dot yellow"></div>
+          <div class="terminal-dot green"></div>
+          <span class="terminal-title">~/my-mobile-app</span>
+        </div>
+        <div class="terminal-body">
+          <div class="terminal-line"><span class="t-prompt">$ </span><span class="t-cmd">git </span><span class="t-flag">init</span> <span class="t-comment"># start tracking your project</span></div>
+          <div class="terminal-line"><span class="t-prompt">$ </span><span class="t-cmd">git </span><span class="t-flag">add</span> <span class="t-string">.</span></div>
+          <div class="terminal-line"><span class="t-prompt">$ </span><span class="t-cmd">git </span><span class="t-flag">commit</span> <span class="t-flag">-m</span> <span class="t-string">"feat: add login screen"</span></div>
+          <div class="terminal-line"><span class="t-output">[main a3f7b2c] feat: add login screen</span></div>
+          <div class="terminal-line"><span class="t-output"> </span><span class="t-branch">│ </span><span class="t-comment">1 file changed, 42 insertions(+)</span></div>
+          <div class="terminal-line"><span class="t-prompt">$ </span><span class="t-cmd">git </span><span class="t-flag">push</span> <span class="t-string">origin main</span><span class="cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">93%</div>
+        <div class="stat-label">of developers use Git</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">100M+</div>
+        <div class="stat-label">GitHub repositories</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">6</div>
+        <div class="stat-label">chapters to master</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">0</div>
+        <div class="stat-label">prerequisites required</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAPTERS -->
+  <section class="concepts" id="chapters">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">Learning Path</div>
+      <h2>Your journey from beginner to advanced</h2>
+      <p>Six chapters designed to take you from zero to Git mastery. Follow them in order, or jump to what you need.</p>
+    </div>
+    <div class="chapters-grid">
+      <a href="chapter1.html" class="chapter-card reveal">
+        <div class="chapter-number">Chapter 01</div>
+        <h3>Introduction to Version Control</h3>
+        <p>What is version control, why it matters, and how to set up Git for the first time.</p>
+        <span class="chapter-badge badge-beginner">Beginner</span>
+      </a>
+      <a href="chapter2.html" class="chapter-card reveal">
+        <div class="chapter-number">Chapter 02</div>
+        <h3>Core Concepts</h3>
+        <p>Repositories, commits, branches, merges, remotes, and pull requests explained.</p>
+        <span class="chapter-badge badge-beginner">Beginner</span>
+      </a>
+      <a href="chapter3.html" class="chapter-card reveal">
+        <div class="chapter-number">Chapter 03</div>
+        <h3>Workflow &amp; Mobile Dev</h3>
+        <p>The standard Git workflow plus mobile-specific guidance for Android, iOS, and cross-platform.</p>
+        <span class="chapter-badge badge-intermediate">Intermediate</span>
+      </a>
+      <a href="chapter4.html" class="chapter-card reveal">
+        <div class="chapter-number">Chapter 04</div>
+        <h3>Git Commands Reference</h3>
+        <p>A comprehensive cheat sheet organized by task — the commands you'll use every day.</p>
+        <span class="chapter-badge badge-all">All Levels</span>
+      </a>
+      <a href="chapter5.html" class="chapter-card reveal">
+        <div class="chapter-number">Chapter 05</div>
+        <h3>Advanced Git</h3>
+        <p>Interactive rebase, cherry-picking, bisect, hooks, submodules, and recovery techniques.</p>
+        <span class="chapter-badge badge-advanced">Advanced</span>
+      </a>
+      <a href="chapter6.html" class="chapter-card reveal">
+        <div class="chapter-number">Chapter 06</div>
+        <h3>Team Strategies &amp; CI/CD</h3>
+        <p>GitFlow, GitHub Flow, trunk-based development, monorepos, and CI/CD pipelines.</p>
+        <span class="chapter-badge badge-advanced">Advanced</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="start">
+    <div class="cta-content reveal">
+      <h2>Ready to commit?</h2>
+      <p>Start your version control journey today. Your future self — and your future team — will thank you.</p>
+      <a href="chapter1.html" class="btn-glow">
+        Begin with the basics
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-links">
+      <a href="chapter1.html">Ch 1: Intro</a>
+      <a href="chapter2.html">Ch 2: Concepts</a>
+      <a href="chapter3.html">Ch 3: Workflow</a>
+      <a href="chapter4.html">Ch 4: Commands</a>
+      <a href="chapter5.html">Ch 5: Advanced</a>
+      <a href="chapter6.html">Ch 6: Strategies</a>
+    </div>
+    <p>Built for students learning version control. Not affiliated with GitHub or Git.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

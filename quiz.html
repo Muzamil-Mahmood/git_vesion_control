@@ -1,0 +1,883 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz: Test Your Knowledge — GitBranch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .quiz-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 8rem 2rem 4rem;
+    }
+
+    .quiz-progress {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 8px;
+      background: var(--border);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gradient-1), var(--gradient-2));
+      border-radius: 100px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--ink-light);
+      white-space: nowrap;
+    }
+
+    .quiz-question {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .question-chapter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gradient-1);
+      margin-bottom: 0.75rem;
+    }
+
+    .question-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: var(--paper);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+      font-size: 1rem;
+      color: var(--ink);
+    }
+
+    .option-btn:hover {
+      border-color: var(--gradient-1);
+      background: rgba(99,91,255,0.04);
+    }
+
+    .option-btn.selected {
+      border-color: var(--gradient-1);
+      background: rgba(99,91,255,0.08);
+    }
+
+    .option-btn.correct {
+      border-color: var(--accent-green);
+      background: rgba(0,212,170,0.08);
+    }
+
+    .option-btn.incorrect {
+      border-color: var(--gradient-4);
+      background: rgba(255,126,179,0.08);
+    }
+
+    .option-btn.disabled {
+      pointer-events: none;
+    }
+
+    .option-letter {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--ink-light);
+      flex-shrink: 0;
+    }
+
+    .option-btn.selected .option-letter {
+      background: var(--gradient-1);
+      border-color: var(--gradient-1);
+      color: white;
+    }
+
+    .option-btn.correct .option-letter {
+      background: var(--accent-green);
+      border-color: var(--accent-green);
+      color: white;
+    }
+
+    .option-btn.incorrect .option-letter {
+      background: var(--gradient-4);
+      border-color: var(--gradient-4);
+      color: white;
+    }
+
+    .explanation {
+      margin-top: 1rem;
+      padding: 1rem 1.25rem;
+      background: rgba(0,115,230,0.06);
+      border-left: 4px solid var(--accent-blue);
+      border-radius: 0 8px 8px 0;
+      font-size: 0.95rem;
+      color: var(--ink-light);
+      line-height: 1.6;
+      display: none;
+    }
+
+    .explanation.show {
+      display: block;
+      animation: fadeInUp 0.3s ease;
+    }
+
+    .quiz-nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .quiz-nav button {
+      padding: 0.85rem 1.75rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: none;
+    }
+
+    .quiz-nav .btn-prev {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      color: var(--ink);
+    }
+
+    .quiz-nav .btn-prev:hover {
+      border-color: var(--gradient-1);
+    }
+
+    .quiz-nav .btn-next {
+      background: linear-gradient(135deg, var(--gradient-1), var(--gradient-3));
+      color: white;
+    }
+
+    .quiz-nav .btn-next:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(99,91,255,0.35);
+    }
+
+    .quiz-nav .btn-next:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Results */
+    .results-container {
+      display: none;
+    }
+
+    .results-hero {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: var(--paper);
+      border-radius: 20px;
+      margin-bottom: 2rem;
+    }
+
+    .score-circle {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      margin: 0 auto 1.5rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .score-circle svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: rotate(-90deg);
+    }
+
+    .score-circle .score-bg {
+      fill: none;
+      stroke: var(--border);
+      stroke-width: 8;
+    }
+
+    .score-circle .score-fill {
+      fill: none;
+      stroke: url(#scoreGradient);
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: 440;
+      stroke-dashoffset: 440;
+      transition: stroke-dashoffset 1.5s ease;
+    }
+
+    .score-value {
+      font-size: 3rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--gradient-1), var(--gradient-3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      z-index: 1;
+    }
+
+    .score-label {
+      font-size: 0.9rem;
+      color: var(--ink-light);
+      margin-top: 0.25rem;
+    }
+
+    .results-message {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+
+    .results-submessage {
+      font-size: 1rem;
+      color: var(--ink-light);
+    }
+
+    .results-breakdown {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .results-breakdown h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .breakdown-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .breakdown-item:last-child {
+      border-bottom: none;
+    }
+
+    .breakdown-chapter {
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .breakdown-score {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .breakdown-bar {
+      width: 100px;
+      height: 6px;
+      background: var(--border);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .breakdown-bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      transition: width 1s ease;
+    }
+
+    .breakdown-bar-fill.good { background: var(--accent-green); }
+    .breakdown-bar-fill.medium { background: var(--code-string); }
+    .breakdown-bar-fill.poor { background: var(--gradient-4); }
+
+    .breakdown-percent {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 600;
+      min-width: 40px;
+      text-align: right;
+    }
+
+    .results-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .results-actions a,
+    .results-actions button {
+      padding: 0.85rem 2rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .results-actions .btn-retake {
+      background: linear-gradient(135deg, var(--gradient-1), var(--gradient-3));
+      color: white;
+      border: none;
+    }
+
+    .results-actions .btn-retake:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(99,91,255,0.35);
+    }
+
+    .results-actions .btn-home {
+      background: var(--white);
+      color: var(--ink);
+      border: 1px solid var(--border);
+    }
+
+    .results-actions .btn-home:hover {
+      border-color: var(--gradient-1);
+      box-shadow: 0 4px 15px rgba(99,91,255,0.1);
+    }
+
+    @media (max-width: 768px) {
+      .quiz-container { padding: 6rem 1.5rem 3rem; }
+      .quiz-question { padding: 1.5rem; }
+      .quiz-nav { flex-direction: column; }
+      .quiz-nav button { width: 100%; }
+      .results-actions { flex-direction: column; }
+      .results-actions a,
+      .results-actions button { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="8" fill="url(#navGrad)"/>
+        <path d="M8 14h12M14 8v12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        <defs><linearGradient id="navGrad" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#635BFF"/><stop offset="1" stop-color="#A259FF"/></linearGradient></defs>
+      </svg>
+      GitBranch
+    </a>
+    <ul class="nav-links">
+      <li><a href="chapter1.html">Ch 1</a></li>
+      <li><a href="chapter2.html">Ch 2</a></li>
+      <li><a href="chapter3.html">Ch 3</a></li>
+      <li><a href="chapter4.html">Ch 4</a></li>
+      <li><a href="chapter5.html">Ch 5</a></li>
+      <li><a href="chapter6.html">Ch 6</a></li>
+      <li><a href="quiz.html" class="nav-cta">Take Quiz</a></li>
+    </ul>
+  </nav>
+
+  <!-- CHAPTER HERO -->
+  <div class="chapter-hero">
+    <div class="section-eyebrow">Knowledge Check</div>
+    <h1>Test Your Knowledge</h1>
+    <p>15 questions covering everything from basics to advanced. See how much you've learned.</p>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-container" id="quizContainer">
+    <div class="quiz-progress">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+      </div>
+      <span class="progress-text" id="progressText">1 / 15</span>
+    </div>
+
+    <div id="questionArea"></div>
+
+    <div class="quiz-nav">
+      <button class="btn-prev" id="btnPrev" onclick="prevQuestion()" style="visibility: hidden">← Previous</button>
+      <button class="btn-next" id="btnNext" onclick="nextQuestion()" disabled>Next →</button>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="quiz-container results-container" id="resultsContainer">
+    <div class="results-hero">
+      <div class="score-circle">
+        <svg width="160" height="160" viewBox="0 0 160 160">
+          <defs>
+            <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#635BFF"/>
+              <stop offset="100%" stop-color="#A259FF"/>
+            </linearGradient>
+          </defs>
+          <circle class="score-bg" cx="80" cy="80" r="70"/>
+          <circle class="score-fill" id="scoreFill" cx="80" cy="80" r="70"/>
+        </svg>
+        <span class="score-value" id="scoreValue">0%</span>
+      </div>
+      <div class="score-label" id="scoreDetail">0 out of 15 correct</div>
+      <div class="results-message" id="resultsMessage">Great job!</div>
+      <div class="results-submessage" id="resultsSubmessage">You have a solid understanding of version control.</div>
+    </div>
+
+    <div class="results-breakdown">
+      <h3>Score by Chapter</h3>
+      <div id="breakdownList"></div>
+    </div>
+
+    <div class="results-actions">
+      <button class="btn-retake" onclick="retakeQuiz()">Retake Quiz</button>
+      <a href="index.html" class="btn-home">Back to Home</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-links">
+      <a href="chapter1.html">Ch 1: Intro</a>
+      <a href="chapter2.html">Ch 2: Concepts</a>
+      <a href="chapter3.html">Ch 3: Workflow</a>
+      <a href="chapter4.html">Ch 4: Commands</a>
+      <a href="chapter5.html">Ch 5: Advanced</a>
+      <a href="chapter6.html">Ch 6: Strategies</a>
+    </div>
+    <p>Built for students learning version control. Not affiliated with GitHub or Git.</p>
+  </footer>
+
+  <script>
+    const questions = [
+      {
+        chapter: "Ch 1: Introduction",
+        question: "What does `git init` do?",
+        options: [
+          "Downloads a repository from GitHub",
+          "Creates a new Git repository in the current directory",
+          "Connects your project to a remote server",
+          "Creates the first commit"
+        ],
+        correct: 1,
+        explanation: "`git init` creates a new `.git` directory that tracks all version history. It doesn't create any files or connect to a remote — it just initializes the tracking system."
+      },
+      {
+        chapter: "Ch 1: Introduction",
+        question: "Which command configures your Git username globally?",
+        options: [
+          "git username set \"Your Name\"",
+          "git config --global user.name \"Your Name\"",
+          "git set user \"Your Name\"",
+          "git --global config name \"Your Name\""
+        ],
+        correct: 1,
+        explanation: "The correct syntax is `git config --global user.name \"Your Name\"`. The `--global` flag applies the setting to all repositories on your machine."
+      },
+      {
+        chapter: "Ch 2: Core Concepts",
+        question: "What are the three states of a file in Git?",
+        options: [
+          "Created, Modified, Deleted",
+          "Working Directory, Staging Area, Repository",
+          "Local, Remote, Branch",
+          "Draft, Review, Published"
+        ],
+        correct: 1,
+        explanation: "Git tracks files in three states: Working Directory (your actual files), Staging Area (changes ready to commit), and Repository (committed history)."
+      },
+      {
+        chapter: "Ch 2: Core Concepts",
+        question: "What does `HEAD` point to in Git?",
+        options: [
+          "The latest commit on any branch",
+          "The first commit in the repository",
+          "The commit you're currently looking at",
+          "The remote repository"
+        ],
+        correct: 2,
+        explanation: "HEAD is a reference that points to the current commit you're working on. When you switch branches, HEAD moves to the latest commit on that branch."
+      },
+      {
+        chapter: "Ch 2: Core Concepts",
+        question: "What is the difference between a lightweight and annotated tag?",
+        options: [
+          "There is no difference",
+          "Lightweight tags are for branches, annotated for releases",
+          "Annotated tags store metadata like tagger name and message",
+          "Lightweight tags can be moved, annotated cannot"
+        ],
+        correct: 2,
+        explanation: "Annotated tags are stored as full Git objects with metadata (tagger, date, message). Lightweight tags are just pointers to a commit — like a bookmark."
+      },
+      {
+        chapter: "Ch 3: Workflow",
+        question: "What is the recommended branch naming convention for new features?",
+        options: [
+          "new-feature",
+          "feature/dark-mode",
+          "feat_dark_mode",
+          "dark-mode-branch"
+        ],
+        correct: 1,
+        explanation: "Using `feature/` prefix with descriptive names makes it clear what type of work each branch contains. Common prefixes: feature/, bugfix/, hotfix/, release/."
+      },
+      {
+        chapter: "Ch 3: Workflow",
+        question: "Why should you never commit `google-services.json` to a public repo?",
+        options: [
+          "It's too large for Git",
+          "It contains API keys and credentials that could be exploited",
+          "Git doesn't support JSON files",
+          "It changes too frequently"
+        ],
+        correct: 1,
+        explanation: "API keys and credentials in `google-services.json` could be used by malicious actors to access your Firebase project. Always add it to `.gitignore` and use environment-specific configs."
+      },
+      {
+        chapter: "Ch 4: Commands",
+        question: "What does `git add -p` do?",
+        options: [
+          "Adds all files to staging",
+          "Adds only Python files",
+          "Interactively stages parts of a file",
+          "Adds a new patch to the repository"
+        ],
+        correct: 2,
+        explanation: "`git add -p` (patch) lets you review each change (hunk) in a file and decide whether to stage it. This is useful for creating focused commits that group related changes."
+      },
+      {
+        chapter: "Ch 4: Commands",
+        question: "What is the difference between `git pull` and `git fetch`?",
+        options: [
+          "They are identical",
+          "fetch downloads changes, pull downloads AND merges",
+          "pull is faster than fetch",
+          "fetch works with remotes, pull works with branches"
+        ],
+        correct: 1,
+        explanation: "`git fetch` downloads new data from the remote but doesn't integrate it. `git pull` is equivalent to `git fetch` followed by `git merge` — it downloads and applies the changes."
+      },
+      {
+        chapter: "Ch 4: Commands",
+        question: "Which command undoes the last commit but keeps changes in the working directory?",
+        options: [
+          "git reset --hard HEAD~1",
+          "git revert HEAD",
+          "git reset HEAD~1",
+          "git undo commit"
+        ],
+        correct: 2,
+        explanation: "`git reset HEAD~1` (default is --mixed) undoes the last commit and moves changes back to the working directory. Use `--soft` to keep them staged, or `--hard` to discard them."
+      },
+      {
+        chapter: "Ch 5: Advanced Git",
+        question: "What does `git rebase -i HEAD~5` allow you to do?",
+        options: [
+          "Merge the last 5 branches",
+          "Rewrite the last 5 commits (squash, reorder, edit)",
+          "Delete the last 5 commits",
+          "Compare the last 5 commits"
+        ],
+        correct: 1,
+        explanation: "Interactive rebase lets you rewrite recent commit history. You can squash commits together, reorder them, edit messages, or drop commits entirely — perfect for cleaning up before a PR."
+      },
+      {
+        chapter: "Ch 5: Advanced Git",
+        question: "What is `git bisect` used for?",
+        options: [
+          "Splitting a repository into two",
+          "Finding the exact commit that introduced a bug using binary search",
+          "Comparing two branches side by side",
+          "Merging two conflicting branches"
+        ],
+        correct: 1,
+        explanation: "Git bisect uses binary search to find the commit that introduced a bug. You mark a known good and bad commit, and Git checks out middle commits until it finds the culprit."
+      },
+      {
+        chapter: "Ch 5: Advanced Git",
+        question: "How can you recover a commit that was 'lost' after a `git reset --hard`?",
+        options: [
+          "It's permanently deleted",
+          "Use git recovery --restore",
+          "Use git reflog to find it, then checkout or branch from that hash",
+          "Clone the repository again"
+        ],
+        correct: 2,
+        explanation: "Git reflog records every movement of HEAD. Even after `git reset --hard`, commits aren't truly deleted — they're just unreachable. Reflog keeps them for 30 days."
+      },
+      {
+        chapter: "Ch 6: Team Strategies",
+        question: "Which branching strategy is best for mobile apps with scheduled releases?",
+        options: [
+          "GitHub Flow",
+          "Trunk-Based Development",
+          "GitFlow",
+          "No branching needed"
+        ],
+        correct: 2,
+        explanation: "GitFlow is designed for projects with scheduled releases. It has dedicated branches for features, releases, and hotfixes — perfect for mobile apps that ship to app stores on a fixed cadence."
+      },
+      {
+        chapter: "Ch 6: Team Strategies",
+        question: "What is the purpose of CI/CD in mobile development?",
+        options: [
+          "To replace manual testing entirely",
+          "To automate building, testing, and deploying apps",
+          "To manage Git branches automatically",
+          "To write code faster"
+        ],
+        correct: 1,
+        explanation: "CI/CD (Continuous Integration/Continuous Deployment) automates the pipeline from code commit to production. For mobile, this includes building APKs/IPAs, running tests, and submitting to app stores."
+      }
+    ];
+
+    let currentQuestion = 0;
+    let answers = new Array(questions.length).fill(null);
+    let answered = new Array(questions.length).fill(false);
+
+    function renderQuestion() {
+      const q = questions[currentQuestion];
+      const letters = ['A', 'B', 'C', 'D'];
+
+      let html = `
+        <div class="quiz-question">
+          <div class="question-chapter">${q.chapter}</div>
+          <div class="question-text">${q.question}</div>
+          <div class="options-list">
+      `;
+
+      q.options.forEach((opt, i) => {
+        let classes = 'option-btn';
+        if (answered[currentQuestion]) {
+          classes += ' disabled';
+          if (i === q.correct) classes += ' correct';
+          else if (i === answers[currentQuestion] && i !== q.correct) classes += ' incorrect';
+        } else if (answers[currentQuestion] === i) {
+          classes += ' selected';
+        }
+
+        html += `
+          <button class="${classes}" onclick="selectOption(${i})">
+            <span class="option-letter">${letters[i]}</span>
+            <span>${opt}</span>
+          </button>
+        `;
+      });
+
+      html += `
+          </div>
+          <div class="explanation ${answered[currentQuestion] ? 'show' : ''}" id="explanation">
+            <strong>Explanation:</strong> ${q.explanation}
+          </div>
+        </div>
+      `;
+
+      document.getElementById('questionArea').innerHTML = html;
+      updateProgress();
+      updateNav();
+    }
+
+    function selectOption(index) {
+      if (answered[currentQuestion]) return;
+
+      answers[currentQuestion] = index;
+      answered[currentQuestion] = true;
+
+      const buttons = document.querySelectorAll('.option-btn');
+      const q = questions[currentQuestion];
+
+      buttons.forEach((btn, i) => {
+        btn.classList.add('disabled');
+        if (i === q.correct) btn.classList.add('correct');
+        else if (i === index && i !== q.correct) btn.classList.add('incorrect');
+      });
+
+      document.getElementById('explanation').classList.add('show');
+
+      if (currentQuestion === questions.length - 1) {
+        document.getElementById('btnNext').textContent = 'See Results';
+      }
+      document.getElementById('btnNext').disabled = false;
+    }
+
+    function nextQuestion() {
+      if (currentQuestion === questions.length - 1) {
+        showResults();
+        return;
+      }
+      currentQuestion++;
+      renderQuestion();
+    }
+
+    function prevQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion();
+      }
+    }
+
+    function updateProgress() {
+      const percent = ((currentQuestion + 1) / questions.length) * 100;
+      document.getElementById('progressFill').style.width = percent + '%';
+      document.getElementById('progressText').textContent = `${currentQuestion + 1} / ${questions.length}`;
+    }
+
+    function updateNav() {
+      document.getElementById('btnPrev').style.visibility = currentQuestion === 0 ? 'hidden' : 'visible';
+
+      const btnNext = document.getElementById('btnNext');
+      if (answered[currentQuestion]) {
+        btnNext.disabled = false;
+        btnNext.textContent = currentQuestion === questions.length - 1 ? 'See Results' : 'Next →';
+      } else {
+        btnNext.disabled = true;
+        btnNext.textContent = 'Next →';
+      }
+    }
+
+    function showResults() {
+      document.getElementById('quizContainer').style.display = 'none';
+      document.getElementById('resultsContainer').style.display = 'block';
+
+      let correct = 0;
+      questions.forEach((q, i) => {
+        if (answers[i] === q.correct) correct++;
+      });
+
+      const percent = Math.round((correct / questions.length) * 100);
+
+      // Animate score
+      document.getElementById('scoreValue').textContent = percent + '%';
+      document.getElementById('scoreDetail').textContent = `${correct} out of ${questions.length} correct`;
+
+      // Animate circle
+      const circumference = 2 * Math.PI * 70;
+      const offset = circumference - (percent / 100) * circumference;
+      setTimeout(() => {
+        document.getElementById('scoreFill').style.strokeDashoffset = offset;
+      }, 100);
+
+      // Message
+      let message, submessage;
+      if (percent >= 90) {
+        message = "Outstanding!";
+        submessage = "You've mastered version control. You're ready for any team.";
+      } else if (percent >= 70) {
+        message = "Great job!";
+        submessage = "You have a solid understanding of version control.";
+      } else if (percent >= 50) {
+        message = "Good effort!";
+        submessage = "Review the chapters for topics you missed and try again.";
+      } else {
+        message = "Keep learning!";
+        submessage = "Re-read the chapters and practice the commands. You'll get there!";
+      }
+
+      document.getElementById('resultsMessage').textContent = message;
+      document.getElementById('resultsSubmessage').textContent = submessage;
+
+      // Breakdown by chapter
+      const chapters = {};
+      questions.forEach((q, i) => {
+        const ch = q.chapter;
+        if (!chapters[ch]) chapters[ch] = { correct: 0, total: 0 };
+        chapters[ch].total++;
+        if (answers[i] === q.correct) chapters[ch].correct++;
+      });
+
+      let breakdownHtml = '';
+      for (const [ch, data] of Object.entries(chapters)) {
+        const chPercent = Math.round((data.correct / data.total) * 100);
+        let barClass = 'good';
+        if (chPercent < 50) barClass = 'poor';
+        else if (chPercent < 80) barClass = 'medium';
+
+        breakdownHtml += `
+          <div class="breakdown-item">
+            <span class="breakdown-chapter">${ch}</span>
+            <div class="breakdown-score">
+              <div class="breakdown-bar">
+                <div class="breakdown-bar-fill ${barClass}" style="width: 0%" data-width="${chPercent}%"></div>
+              </div>
+              <span class="breakdown-percent">${data.correct}/${data.total}</span>
+            </div>
+          </div>
+        `;
+      }
+      document.getElementById('breakdownList').innerHTML = breakdownHtml;
+
+      // Animate breakdown bars
+      setTimeout(() => {
+        document.querySelectorAll('.breakdown-bar-fill').forEach(bar => {
+          bar.style.width = bar.dataset.width;
+        });
+      }, 300);
+
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function retakeQuiz() {
+      currentQuestion = 0;
+      answers = new Array(questions.length).fill(null);
+      answered = new Array(questions.length).fill(false);
+
+      document.getElementById('quizContainer').style.display = 'block';
+      document.getElementById('resultsContainer').style.display = 'none';
+
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Initialize
+    renderQuestion();
+  </script>
+</body>
+</html>
